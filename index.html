@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Plan your itinerary, outfits, and packing list together.">
+<title>soli — Travel planner</title>
+<style>
+:root{--paper:#f4f6fa;--card:#fff;--ink:#171f31;--muted:#505d72;--line:#dbe1ec;--accent:#1549bd;--tint:#e8effd;--type:"Helvetica Neue",Helvetica,Arial,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px "Helvetica Neue",Helvetica,Arial,sans-serif}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #1549bd;outline-offset:3px}header{border-bottom:1px solid var(--line)}.top,main{max-width:1180px;margin:auto;padding-inline:32px}.top{height:74px;display:flex;align-items:center;justify-content:space-between;gap:14px}.brand{font:39px/1 var(--type);letter-spacing:-1.6px}.brand span{color:#1549bd;font:21px system-ui;margin-right:8px}.trip-select{display:flex;gap:8px;align-items:center}.button,select,input:not([type=checkbox]){border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);padding:9px 12px}.button:hover{border-color:#537dd5}.primary{background:var(--accent);color:white;border-color:var(--accent)}.quiet{border:0;background:none;padding:6px;color:var(--muted)}.quiet:hover{color:var(--ink);background:#e8effd;border-radius:5px}
+.hero{position:relative;overflow:hidden;isolation:isolate;margin-top:32px;padding:34px 40px 37px;border-radius:19px;background:var(--accent);color:#fffef1;min-height:213px;display:flex;align-items:center;justify-content:space-between}.hero h1{margin:4px 0 9px;font:clamp(52px,8vw,93px)/.94 var(--type);letter-spacing:-.035em;overflow-wrap:anywhere}.hero p{margin:0;color:#e0e6d6}.hero .label{color:var(--tint)}.stamp{position:absolute;right:8%;top:50%;transform:translateY(-50%) rotate(-12deg);width:158px;aspect-ratio:1;border:1px dashed #cbdca3;border-radius:100%;display:grid;place-content:center;text-align:center;color:#e8effd;font:65px/.85 var(--type);z-index:-1;opacity:.78}.stamp small{font:10px var(--type);letter-spacing:.22em;margin-top:10px}.hero:after{content:"";position:absolute;inset:-90% -15% -100% 40%;background:repeating-radial-gradient(ellipse at 68% 52%,transparent 0 18px,#e8effd22 19px 20px);transform:rotate(-24deg);z-index:-2}.label{font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}.tabs{display:flex;gap:clamp(12px,4vw,26px);border-bottom:1px solid var(--line);margin-top:18px}.tabs button{border:0;border-bottom:2px solid transparent;background:none;padding:15px 2px 12px;color:var(--muted);font-weight:700}.tabs button[aria-pressed=true]{border-color:var(--accent);color:var(--accent)}
+.days{display:flex;gap:8px;overflow:auto;padding:19px 3px 4px}.day{flex:none;min-width:72px;text-align:left}.day strong,.day small{display:block}.day[aria-pressed=true]{background:var(--tint);border-color:#98b6f1}.grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:18px;margin-top:15px}.stack{display:grid;gap:18px;align-content:start}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;min-width:0}.heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}.heading h2,h3{font:34px/1 var(--type);margin:0}.heading h2{overflow-wrap:anywhere}.row{display:flex;align-items:center;gap:12px;border-top:1px solid var(--line);padding:12px 0}.row:last-child{padding-bottom:0}.row .copy{flex:1;min-width:0;overflow-wrap:anywhere}.row strong{display:block}.row small,.muted{color:var(--muted)}.time{font-variant-numeric:tabular-nums;color:var(--muted);width:45px;flex:none;font-size:13px}.weather{font:44px/1 var(--type);margin:8px 0}.chips{display:flex;gap:7px;flex-wrap:wrap}.chip{font-size:12px;border-radius:99px;background:#eef2f8;padding:6px 9px;overflow-wrap:anywhere;max-width:100%}.chip.reuse{background:#e3ecff}.bar{height:7px;background:#e4eaf4;border-radius:99px;overflow:hidden;margin-top:12px}.bar span{display:block;height:100%;background:#1549bd}.spaced{margin-top:18px}main{padding-bottom:40px}.empty{color:var(--muted);margin:12px 0 0}.check{width:18px;height:18px;accent-color:var(--accent);flex:none}.check:checked+.copy strong{text-decoration:line-through;color:var(--muted)}.thumb{width:42px;height:42px;object-fit:cover;border-radius:6px}.outfit-picker{max-height:310px;overflow:auto}.outfit-picker .row{justify-content:flex-start}.outfit-picker .row span{flex:1}
+dialog{width:min(440px,calc(100% - 24px));max-height:90dvh;border:1px solid var(--line);border-radius:16px;padding:22px;background:var(--card);color:var(--ink)}dialog::backdrop{background:#141d3388}dialog form{display:grid;gap:12px}dialog label:not(.row){display:grid;gap:5px;font-size:13px;font-weight:700}dialog input,dialog select{width:100%;min-width:0}dialog input[type=checkbox]{width:18px}dialog menu{display:flex;justify-content:flex-end;gap:8px;margin:7px 0 0;padding:0}.error{color:#8d2e22;font-size:13px;margin:0}.status{margin:10px 0;color:#8d2e22}.single{max-width:760px}.section{margin:22px 0 8px}
+@media(max-width:650px){.top,main{padding-inline:15px}.top{height:65px}.trip-select select{max-width:134px}.trip-select .button{white-space:nowrap}.brand{font-size:32px}.hero{margin-top:18px;padding:25px;min-height:170px}.stamp{right:2%;width:109px;font-size:43px;opacity:.42}.hero h1{max-width:82%}.grid{grid-template-columns:1fr}.card{padding:16px}.heading h2{font-size:30px}}
+.plan-tools{display:flex;justify-content:flex-end;margin-top:14px}.plan-tools+.days{padding-top:8px}.time{width:53px}#fields .row span{min-width:0;overflow-wrap:anywhere}#fields .row small{display:block;margin-top:4px}
+[hidden]{display:none!important}
+.onboarding{display:grid;grid-template-columns:1.04fr 1fr;max-width:1050px;margin:clamp(22px,5vw,66px) auto 0;border:1px solid var(--line);border-radius:22px;overflow:hidden;background:var(--card)}
+.start-panel{min-width:0;padding:clamp(24px,4.2vw,52px)}.start-panel h2,.wishlist-intro h2{font:clamp(36px,4.4vw,52px)/.95 var(--type);margin:8px 0 10px}.start-panel p,.wishlist-intro p{margin:0}.onboarding form{margin-top:22px}.onboarding label{display:grid;gap:5px;font-size:13px;font-weight:700;min-width:0}.onboarding input{width:100%;min-width:0;min-height:43px}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.onboarding details{margin:16px 0}.onboarding details p{margin-top:8px}.onboarding summary{cursor:pointer;color:var(--accent);font-weight:700}.onboarding-actions{margin-top:20px}.onboarding-actions .button{min-height:44px;width:100%;display:flex;align-items:center;justify-content:space-between;padding-inline:14px}.start-footer{display:flex;align-items:baseline;gap:8px 12px;flex-wrap:wrap;margin-top:12px}.start-footer small,.start-footer a{color:var(--muted);font-size:10px}.start-footer .quiet{padding-left:0;font-weight:600}.wishlist-intro{margin-top:24px}
+@media(max-width:700px){.onboarding{grid-template-columns:1fr}.welcome{min-height:0;padding:26px}.welcome h1{font-size:clamp(44px,9vw,60px);margin-bottom:10px}.welcome-route{display:none}.start-panel{padding:24px}.start-panel h2{font-size:36px}}
+.place-field{position:relative;margin-top:10px}.place-field label{display:grid;gap:5px}.place-field input{width:100%}.place-results{position:relative;z-index:2;list-style:none;margin:4px 0;padding:3px;border:1px solid var(--line);border-radius:9px;max-height:220px;overflow:auto;background:var(--card);box-shadow:0 5px 15px #182c5319}.place-results li{padding:8px;cursor:pointer;border-radius:5px}.place-results li:hover,.place-results li[aria-selected=true]{background:var(--tint)}.place-results small{display:block;color:var(--muted)}.place-field>small:not(:empty){display:block;margin-top:4px}
+</style>
+<link rel="stylesheet" href="interface.css">
+</head>
+<body>
+<div id="launch-screen" class="launch-screen" aria-hidden="true">
+  <div class="launch-window">
+    <span class="launch-name">soli</span>
+    <div class="launch-shade"></div>
+    <div class="launch-name-mask"><span class="launch-name">soli</span></div>
+  </div>
+</div>
+<header><div class="top"><button class="brand home-link" data-action="home" aria-label="soli home">soli</button><div class="trip-select"><select id="trips" aria-label="Current trip"></select><button class="button primary" id="new-trip">+ New trip</button></div></div></header>
+<main>
+<div id="status" role="status"></div>
+<div id="hero" class="hero"></div>
+<nav class="tabs" aria-label="Trip views"><button data-tab="setup">Wishlist</button><button data-tab="today">Today</button><button data-tab="itinerary">Itinerary</button><button data-tab="packing">Packing</button></nav>
+<div id="view"></div>
+</main>
+<dialog id="editor"><form id="form"><h3 id="form-title"></h3><div id="fields"></div><p class="error" id="error" role="alert" hidden></p><menu><button class="button" type="button" id="cancel">Cancel</button><button class="button primary" id="save">Save</button></menu></form></dialog>
+<script src="planner.js"></script>
+<script src="trip-planner.js"></script>
+<script src="places.js"></script>
+<script src="trip-setup.js"></script>
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+const id = () => globalThis.crypto?.randomUUID?.() ?? Math.random().toString(36).slice(2);
+const esc = (value = "") => String(value).replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[char]);
+const date = value => new Date(value + "T12:00:00");
+const fmt = (value, options) => date(value).toLocaleDateString("en-US", options);
+const iso = value => [value.getFullYear(), String(value.getMonth()+1).padStart(2,"0"), String(value.getDate()).padStart(2,"0")].join("-");
+const range = (start,end) => {
+  const days = [];
+  for (const day=date(start);day<=date(end);day.setDate(day.getDate()+1)) days.push(iso(day));
+  return days;
+};
+const categories = ["Clothing","Shoes","Toiletries","Tech","Documents","Other"];
+const types = ["Sightseeing","Food","Bakery","Café","Brunch","Restaurant","Hiking","Outdoor","Indoor","Dinner","Wedding","Cocktail bar","Museum","Art gallery","Hotel change","Transit","Shopping","Stay","Other"];
+const conditions = ["Sunny","Partly cloudy","Cloudy","Rain","Snow","Windy"];
+const sample = {
+  id:"seoul", name:"Seoul, South Korea", start:"2027-04-09", end:"2027-04-13", demo:true,
+  days:{
+    "2027-04-09":{weather:{low:49,high:64,condition:"Partly cloudy"},walking:"Lots of walking",hotel:"Back before dinner",evening:["trench","dress","heels"],outfit:["trench","tee","jeans","shoes"],activities:[
+      {id:"a1",time:"09:00",name:"Coffee in Anguk",place:"Anguk",type:"Food"},
+      {id:"a2",time:"11:00",name:"Gyeongbokgung Palace",place:"Jongno-gu",type:"Sightseeing"},
+      {id:"a3",time:"15:00",name:"Browse shops in Seongsu",place:"Seongdong-gu",type:"Shopping"},
+      {id:"a4",time:"19:00",name:"Dinner in Euljiro",place:"Jung-gu",type:"Dinner",attire:"Dressy"}]},
+    "2027-04-10":{weather:{low:48,high:59,condition:"Rain"},walking:"Moderate walking",hotel:"Back before dinner",outfit:["trench","knit","jeans","shoes"],activities:[
+      {id:"a5",time:"11:00",name:"National Museum of Korea",place:"Yongsan-gu",type:"Sightseeing"},
+      {id:"a6",time:"18:30",name:"Dinner in Hannam",place:"Hannam-dong",type:"Food"}]},
+    "2027-04-11":{weather:{low:50,high:67,condition:"Sunny"},outfit:["tee","jeans","shoes"],activities:[{id:"a7",time:"14:00",name:"Walk along the Han River",place:"Yeouido",type:"Sightseeing"},{id:"a8",time:"11:00",name:"Leeum Museum of Art",place:"Hannam-dong",type:"Art gallery",flexible:true},{id:"a9",time:"21:00",name:"Cocktails in Euljiro",place:"Jung-gu",type:"Cocktail bar",flexible:true,attire:"Dressy"}]}
+  },
+  items:[
+    ["trench","Light trench","Clothing",true],["tee","White tee","Clothing",true],["knit","Gray cardigan","Clothing",false],["jeans","Dark jeans","Clothing",true],["shoes","Walking sneakers","Shoes",true],["pass","Passport","Documents",true],["charger","Phone charger","Tech",false],["spf","Sunscreen","Toiletries",false],["dress","Black dinner dress","Clothing",false],["heels","Dress shoes","Shoes",false]
+  ].map(([id,name,category,packed])=>({id,name,category,packed}))
+};
+const key = "dayvia-travel-v1";
+let state;
+try { state=JSON.parse(localStorage.getItem(key)); } catch {}
+let localStorageHasTrip=Boolean(state?.trips?.length);
+if (!state?.trips?.length) state={trips:[sample],active:sample.id};
+else if(state.trips.some(trip=>trip.id==="seoul" && !trip.items.some(item=>item.id==="dress")) && !state.trips.some(trip=>trip.id==="seoul-demo")){
+  state.trips.push({...sample,id:"seoul-demo",name:"Seoul planning demo"});
+}
+let tab="landing", selected, saveForm;
+for(const trip of state.trips.filter(entry=>entry.demo && entry.wishlist===undefined)){
+  trip.wishlist=structuredClone(sampleWishlist);
+  trip.hotelName ||= "Stay in Jongno";
+  trip.hotelArea ||= "Jongno-gu";
+  const heels=trip.items.find(item=>item.id==="heels");
+  if(heels && !heels.role) {heels.name="Black heels";heels.role="Dress shoes";}
+}
+const active = () => state.trips.find(trip=>trip.id===state.active) ?? state.trips[0];
+const getDay = (trip,day) => trip.days[day] ?? {activities:[],outfit:[]};
+const editDay = (trip,day) => trip.days[day] ??= {activities:[],outfit:[]};
+const dates = trip => range(trip.start,trip.end);
+const todayFor = trip => {
+  const today=iso(new Date());
+  return today>=trip.start && today<=trip.end ? today : trip.start;
+};
+function persist(){
+  localStorageHasTrip=true;
+  try {localStorage.setItem(key,JSON.stringify(state)); $("status").textContent="";}
+  catch {$("status").className="status";$("status").textContent="Browser storage is unavailable or full. Your latest changes are only available until you reload.";}
+  render();
+}
+const button = (label,action,value="",style="button") => `<button class="${style}" data-action="${action}" data-value="${esc(value)}">${label}</button>`;
+const heading = (title,action="") => `<div class="heading"><h2>${title}</h2>${action}</div>`;
+const reuse = (trip,item) => Object.entries(trip.days).filter(([day,plan])=>day>=trip.start && day<=trip.end && (plan.outfit?.includes(item) || plan.evening?.includes(item))).length;
+function render(){
+  const expanded=[...$("view").querySelectorAll("[data-wishlist-section][open]")].map(section=>section.dataset.wishlistSection);
+  const trip=active(), days=dates(trip);
+  if(!days.includes(selected)) selected=todayFor(trip);
+  const shown=tab==="today"?todayFor(trip):selected;
+  const day=getDay(trip,shown);
+  $("trips").innerHTML=state.trips.map(entry=>`<option value="${esc(entry.id)}"${entry.id===trip.id?" selected":""}>${esc(entry.name)}</option>`).join("");
+  const starting=tab==="start";
+  const planning=tab!=="landing"&&tab!=="my-trips"&&!starting;
+  $("hero").hidden=!planning;
+  document.querySelector(".tabs").hidden=!planning;
+  document.querySelector(".trip-select").hidden=!planning;
+  if(tab==="landing"){$("view").innerHTML=landingPage();return;}
+  if(tab==="my-trips"){$("view").innerHTML=myTripsPage();return;}
+  if(starting){$("view").innerHTML=startTrip();connectPlaces($("view"),()=>$("view").querySelector('[data-place="destination"]').selectedPlace);return;}
+  $("hero").innerHTML=`<h1>${esc(trip.name)}</h1><p>${fmt(trip.start,{month:"short",day:"numeric"})} – ${fmt(trip.end,{month:"short",day:"numeric",year:"numeric"})}${trip.demo?" · Demo":""} <button class="quiet" data-action="edit-trip">Edit trip</button></p>`;
+  document.querySelectorAll("[data-tab]").forEach(btn=>btn.setAttribute("aria-pressed",btn.dataset.tab===tab));
+  $("view").innerHTML=tab==="setup"?setup(trip):tab==="packing"?packing(trip):`${tab==="itinerary"?`<div class="plan-tools">${button("Rebuild itinerary","build-trip",shown,"quiet")}</div><div class="days" aria-label="Trip days">${days.map((d,i)=>`<button class="button day" data-action="day" data-value="${d}" aria-pressed="${d===shown}"><small>Day ${i+1}</small><strong>${fmt(d,{weekday:"short",day:"numeric"})}</strong></button>`).join("")}</div>`:`<p class="muted spaced">${shown===iso(new Date())?"Today's plan": "Trip preview · showing the first day"}</p>`}
+  <div class="grid"><section class="card">${heading(fmt(shown,{weekday:"long",month:"long",day:"numeric"}),button("+ Activity","activity",shown))}${agenda(day,shown)}</section>
+  <div class="stack"><section class="card">${heading("Day conditions",button("Edit","weather",shown,"quiet"))}${weather(day,trip.demo)}</section>
+  <section class="card">${heading("Day outfit",button("Choose pieces","outfit",shown))}${outfit(trip,day)}</section>${day.evening?.length || day.activities.some(activity=>activity.attire==="Dressy")?`<section class="card">${heading("Dressy outfit",button("Choose pieces","evening",shown))}${outfit(trip,day,"evening")}</section>`:`<div>${button("+ Dressy outfit","evening",shown,"quiet")}</div>`}</div></div>`;
+  for(const section of $("view").querySelectorAll("[data-wishlist-section]")) section.open=expanded.includes(section.dataset.wishlistSection);
+}
+function agenda(day,shown){
+  const activities=[...day.activities].sort((a,b)=>(a.time||"99:99").localeCompare(b.time||"99:99"));
+  return activities.map(a=>`<div class="row"><span class="time">${esc(a.time)||"Anytime"}</span><div class="copy"><strong>${esc(a.name)}</strong><small>${[a.type,a.location?.address||a.place||a.area,a.attire,a.travelMinutes?`~${a.travelMinutes} min travel`:"",a.flexible?"Flexible":""].filter(Boolean).map(esc).join(" · ")}</small></div>${button("Edit","edit-activity",shown+"|"+a.id,"quiet")}</div>`).join("") || '<p class="empty">No activities planned.</p>';
+}
+function weather(day,demo){
+  const w=day.weather;
+  return `${w?`<div class="weather">${w.high}° / ${w.low}°F</div><p class="muted">${esc(w.condition)}${w.source==="forecast"?" · Open-Meteo forecast":demo && w.example!==false?" · sample weather":""}</p>`:'<p class="empty">Add expected weather for this day.</p>'}
+  <div class="chips">${[day.walking,day.hotel].filter(Boolean).map(value=>`<span class="chip">${esc(value)}</span>`).join("")}</div>`;
+}
+function outfit(trip,day,slot="outfit"){
+  const items=trip.items.filter(item=>day[slot]?.includes(item.id));
+  return items.length?`<div class="chips">${items.map(item=>{const count=reuse(trip,item.id);return `<span class="chip ${count>1?"reuse":""}">${esc(item.name)}${count>1?" · "+count+" days":""}</span>`;}).join("")}</div>`:'<p class="empty">Choose pieces from your packing list.</p>';
+}
+function packing(trip){
+  const packed=trip.items.filter(item=>item.packed).length, total=trip.items.length;
+  return `<section class="card single spaced">${heading("Packing list",button("+ Item","item"))}<div class="muted">${packed} of ${total} packed</div><div class="bar"><span style="width:${total?packed/total*100:0}%"></span></div>
+  ${categories.map(category=>{
+    const items=trip.items.filter(item=>item.category===category);
+    return items.length?`<h3 class="label section" style="font:inherit;font-weight:700">${category}</h3>${items.map(item=>{const count=reuse(trip,item.id);return `<div class="row"><input class="check" type="checkbox" aria-label="Mark ${esc(item.name)} packed" data-pack="${item.id}" ${item.packed?"checked":""}><div class="copy"><strong>${esc(item.name)}</strong>${count?`<small>Worn ${count} ${count===1?"day":"days"}</small>`:""}</div>${item.photo?`<img class="thumb" alt="" src="${esc(item.photo)}">`:""}${button("Edit","edit-item",item.id,"quiet")}</div>`;}).join("")}`:"";
+  }).join("")||'<p class="empty">Add the first thing you want to pack.</p>'}</section>`;
+}
+const field = (label,name,value="",type="text",attrs="") => `<label style="margin-top:10px">${label}<input type="${type}" name="${name}" value="${esc(value)}" ${attrs}></label>`;
+const select = (label,name,options,value="") => `<label style="margin-top:10px">${label}<select name="${name}">${options.map(option=>`<option ${option===value?"selected":""}>${esc(option)}</option>`).join("")}</select></label>`;
+function dialog(title,fields,save,label="Save"){
+  $("save").textContent=label;
+  $("form-title").textContent=title;
+  $("fields").innerHTML=fields;
+  $("error").hidden=true;
+  saveForm=save;
+  $("editor").showModal();
+  connectPlaces($("fields"),()=>tripSearchLocation(active()));
+}
+function editTrip(trip){
+  dialog("Edit trip",placeField("Destination","destination",trip.name,true)+field("Start date","start",trip.start,"date","required")+field("End date","end",trip.end,"date","required"),data=>{
+    const {destination:name,start,end}=Object.fromEntries(data);
+    const location=$("form").elements.destination.selectedPlace;
+    if(!name.trim()) throw Error("Enter a destination.");
+    if(end<start || (date(end)-date(start))/86400000>=90) throw Error("Choose dates in order with a trip of up to 90 days.");
+    Object.assign(trip,{name:name.trim(),start,end,destination:location??(trip.name===name.trim()?trip.destination:undefined)});
+    selected=undefined;
+    tab="setup";
+  });
+}
+function editActivity(trip,shown,activity){
+  dialog(activity?"Edit activity":"Add activity",field("Activity","name",activity?.name,"text","required maxlength=100")+field("Time","time",activity?.time,"time")+select("Type","type",types,activity?.type)+field("Location","place",activity?.place,"text","maxlength=100")+select("Attire","attire",["","Casual","Dressy"],activity?.attire)+field("Duration (minutes)","duration",activity?duration(activity):"","number","min=15 max=720 placeholder=Default")+`<label class="row"><input type="checkbox" name="flexible" ${activity?.flexible?"checked":""}> Flexible date and time</label>`+(activity?`<label class="row"><input type="checkbox" name="remove"> Delete activity</label>`:""),data=>{
+    const {name,time,type,place,remove,attire,flexible,duration:length}=Object.fromEntries(data);
+    if(!remove && !name.trim()) throw Error("Enter an activity name.");
+    const day=editDay(trip,shown);
+    if(remove) day.activities=day.activities.filter(a=>a.id!==activity.id);
+    else {
+      const details={name:name.trim(),time,type,place:place.trim(),attire,flexible:Boolean(flexible),duration:length?Number(length):undefined};
+      if(activity) Object.assign(activity,details);
+      else day.activities.push({id:id(),...details});
+    }
+  });
+}
+function editWeather(trip,shown){
+  const day=getDay(trip,shown);
+  dialog("Day conditions",select("Weather","condition",["",...conditions],day.weather?.condition)+field("High (°F)","high",day.weather?.high,"number","min=-100 max=150")+field("Low (°F)","low",day.weather?.low,"number","min=-100 max=150")+select("Walking","walking",["","Light walking","Moderate walking","Lots of walking"],day.walking)+select("Hotel access","hotel",["","Back before dinner","Out until dinner","Easy to return anytime"],day.hotel),data=>{
+    const {condition,low,high,walking,hotel}=Object.fromEntries(data);
+    if((condition||low||high)&&(!condition||low===""||high===""||Number(low)>Number(high))) throw Error("Choose a condition and enter a high at or above the low.");
+    Object.assign(editDay(trip,shown),{walking,hotel,weather:condition?{condition,low:Number(low),high:Number(high),example:false}:null});
+  });
+}
+function chooseOutfit(trip,shown,slot="outfit"){
+  if(!trip.items.length){editItem(trip,undefined,()=>chooseOutfit(trip,shown,slot));return;}
+  const day=getDay(trip,shown);
+  dialog(slot==="evening"?"Choose dressy outfit":"Choose day outfit",`<div class="outfit-picker">${trip.items.filter(item=>["Clothing","Shoes","Other"].includes(item.category)).map(item=>`<label class="row"><input type="checkbox" name="piece" value="${item.id}" ${day[slot]?.includes(item.id)?"checked":""}>${item.photo?`<img class="thumb" alt="" src="${esc(item.photo)}">`:""}<span>${esc(item.name)}</span></label>`).join("") || '<p class="empty">Add clothing, shoes, or accessories in Packing first.</p>'}</div>`,data=>{editDay(trip,shown)[slot]=data.getAll("piece");});
+}
+async function makeThumbnail(file){
+  if(!/^image\/(jpeg|png|webp|gif|avif)$/.test(file.type)) throw Error("Choose a JPEG, PNG, WebP, GIF, or AVIF image.");
+  if(file.size>15*1024*1024) throw Error("Choose an image under 15 MB.");
+  let bitmap;
+  try{bitmap=await createImageBitmap(file);}catch{throw Error("This image could not be opened.");}
+  try{
+    const canvas=document.createElement("canvas"),ratio=Math.min(1,256/Math.max(bitmap.width,bitmap.height));
+    canvas.width=Math.max(1,Math.round(bitmap.width*ratio));canvas.height=Math.max(1,Math.round(bitmap.height*ratio));
+    canvas.getContext("2d").drawImage(bitmap,0,0,canvas.width,canvas.height);
+    return canvas.toDataURL("image/webp",.76);
+  } finally {bitmap.close();}
+}
+function editItem(trip,item,afterSave){
+  dialog(item?"Edit packing item":"Add packing item",field("Item","name",item?.name,"text","required maxlength=72")+select("Category","category",categories,item?.category)+field("Photo (optional)","photo","","file",'accept="image/jpeg,image/png,image/webp,image/gif,image/avif"')+(item?`<label class="row"><input type="checkbox" name="remove"> Delete item and remove it from outfits</label>`:""),async data=>{
+    const {name,category,photo,remove}=Object.fromEntries(data);
+    if(remove){
+      trip.items=trip.items.filter(entry=>entry.id!==item.id);
+      for(const day of Object.values(trip.days)) {
+        day.outfit=day.outfit.filter(piece=>piece!==item.id);
+        if(day.evening) day.evening=day.evening.filter(piece=>piece!==item.id);
+      }
+      return;
+    }
+    if(!name.trim()) throw Error("Enter an item name.");
+    const image=photo.size?await makeThumbnail(photo):item?.photo;
+    const details={name:name.trim(),category,photo:image};
+    if(item) Object.assign(item,details);
+    else trip.items.push({id:id(),packed:false,...details});
+    return afterSave;
+  });
+}
+$("form").addEventListener("submit",async event=>{
+  event.preventDefault();
+  $("save").disabled=true;
+  $("cancel").disabled=true;
+  try {
+    const next=await saveForm(new FormData(event.currentTarget));
+    $("editor").close();
+    persist();
+    if(next) next();
+  } catch(error){
+    $("error").textContent=error.message;$("error").hidden=false;
+  } finally {$("save").disabled=false;$("cancel").disabled=false;}
+});
+$("cancel").onclick=()=>$("editor").close();
+$("editor").addEventListener("cancel",event=>{if($("save").disabled)event.preventDefault();});
+$("new-trip").onclick=()=>{tab="start";render();$("view").querySelector("input").focus();};
+$("view").addEventListener("submit",event=>{
+  if(event.target.id!=="start-trip") return;
+  event.preventDefault();
+  const {destination:name,start,end,stay}=Object.fromEntries(new FormData(event.target));
+  const destination=event.target.elements.destination.selectedPlace;
+  const location=event.target.elements.stay.selectedPlace;
+  const error=$("start-error");
+  const span=(date(end)-date(start))/86400000;
+  if(!name.trim() || span<0 || Math.round(span)>=90){
+    error.textContent=!name.trim()?"Enter a destination.":"Choose dates in order for a trip of up to 90 days.";
+    error.hidden=false;
+    return;
+  }
+  const trip={id:id(),name:name.trim(),destination,start,end,wishlist:[],days:{},items:[],
+    stays:stay.trim()?[{id:id(),name:stay.trim(),area:location?.area,location,from:start,through:end}]:[]};
+  state.trips.push(trip);
+  state.active=trip.id;
+  tab="setup";
+  selected=undefined;
+  persist();
+  $("wishlist-title").focus();
+});
+$("trips").onchange=event=>{state.active=event.target.value;selected=undefined;persist();};
+document.addEventListener("change",event=>{
+  const itemId=event.target.dataset.pack;
+  if(!itemId)return;
+  active().items.find(item=>item.id===itemId).packed=event.target.checked;
+  persist();
+  document.querySelector(`[data-pack="${CSS.escape(itemId)}"]`)?.focus();
+});
+document.addEventListener("click",event=>{
+  const control=event.target.closest("button[data-tab],button[data-action]");
+  if(!control)return;
+  const {tab:next,action,value}=control.dataset;
+  if(next){tab=next;render();return;}
+  const trip=active();
+  switch(action){
+    case "day":selected=value;render();document.querySelector(`[data-value="${value}"][data-action="day"]`)?.focus();break;
+    case "edit-trip":editTrip(trip);break;
+    case "activity":editActivity(trip,value);break;
+    case "edit-activity":{const [shown,activityId]=value.split("|");editActivity(trip,shown,getDay(trip,shown).activities.find(a=>a.id===activityId));break;}
+    case "weather":editWeather(trip,value);break;
+    case "outfit":chooseOutfit(trip,value);break;
+    case "evening":chooseOutfit(trip,value,"evening");break;
+    case "home":tab="landing";render();$("landing-title").focus();break;
+    case "start-trip":$("new-trip").click();break;
+    case "my-trips":tab="my-trips";render();$("my-trips-title").focus();break;
+    case "open-trip":{
+      const saved=state.trips.find(entry=>entry.id===value);
+      if(!saved) break;
+      state.active=saved.id;
+      selected=undefined;
+      tab=dates(saved).some(day=>getDay(saved,day).activities.length)?"itinerary":"setup";
+      persist();
+      break;
+    }
+    case "cancel-start":tab="landing";render();$("landing-title").focus();break;
+    case "try-demo":state.active=state.trips.find(entry=>entry.demo)?.id??state.active;tab="setup";selected=undefined;persist();$("wishlist-title").focus();break;
+    case "stay":editStay(trip);break;
+    case "edit-stay":editStay(trip,value);break;
+    case "wish":editWish(trip);break;
+    case "edit-wish":editWish(trip,trip.wishlist.find(place=>place.id===value));break;
+    case "piece":editPiece(trip);break;
+    case "edit-piece":editPiece(trip,trip.items.find(item=>item.id===value));break;
+    case "sample-wish":loadWishlist(trip);break;
+    case "build-trip":buildTrip(trip);break;
+    case "item":editItem(trip);break;
+    case "edit-item":editItem(trip,trip.items.find(item=>item.id===value));break;
+  }
+});
+function moveLandingEyes(event) {
+  const eyes=document.querySelector(".landing-eyes");
+  if(!eyes || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const bounds=eyes.parentElement.getBoundingClientRect();
+  const x=event ? event.clientX-bounds.left-bounds.width/2 : 0;
+  const y=event ? event.clientY-bounds.top-bounds.height*.65 : 0;
+  const reach=Math.max(240,Math.hypot(x,y));
+  eyes.style.setProperty("--look-x",`${x/reach*24}px`);
+  eyes.style.setProperty("--look-y",`${y/reach*16}px`);
+}
+document.addEventListener("pointermove",event=>{
+  if(event.pointerType==="mouse" || event.pointerType==="pen") moveLandingEyes(event);
+});
+document.documentElement.addEventListener("pointerleave",()=>moveLandingEyes());
+
+const launch = $("launch-screen");
+const launchEvents = new AbortController();
+function dismissLaunch(){
+  launch.remove();
+  launchEvents.abort();
+}
+if (matchMedia("(prefers-reduced-motion: reduce)").matches) dismissLaunch();
+else {
+  const options={signal:launchEvents.signal};
+  launch.addEventListener("animationend",event=>{
+    if(event.target===launch) dismissLaunch();
+  },options);
+  document.addEventListener("pointerdown",dismissLaunch,options);
+  document.addEventListener("keydown",dismissLaunch,options);
+}
+render();
+</script>
+</body>
+</html>
