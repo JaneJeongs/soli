@@ -2,6 +2,28 @@
 (() => {
   const mobile = matchMedia('(max-width: 650px)');
   const originalRender = render;
+  const originalStartTrip = $('new-trip').onclick;
+  const originalDialog = dialog;
+  $('new-trip').onclick = function(event) {
+    if (!mobile.matches) return originalStartTrip.call(this,event);
+    tab='start';
+    render();
+    const title=document.getElementById('start-title');
+    title?.setAttribute('tabindex','-1');
+    title?.focus({preventScroll:true});
+  };
+  dialog = function(...args) {
+    const title=document.getElementById('form-title');
+    if (mobile.matches) {
+      title.setAttribute('tabindex','-1');
+      title.setAttribute('autofocus','');
+    } else {
+      title.removeAttribute('autofocus');
+      title.removeAttribute('tabindex');
+    }
+    return originalDialog(...args);
+  };
+
   const paths = {
     places: '<path d="M12 21s7-6 7-12A7 7 0 0 0 5 9c0 6 7 12 7 12Z"/><circle cx="12" cy="9" r="2.5"/>',
     day: '<rect x="4" y="5" width="16" height="16" rx="3"/><path d="M8 3v4m8-4v4M4 11h16"/>',

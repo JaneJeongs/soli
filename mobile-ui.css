@@ -90,7 +90,13 @@
   .mobile-welcome-actions .button { flex:1; min-height:48px; padding:10px 12px; white-space:nowrap; font-size:16px; }
   .mobile-welcome-glow { position:relative; isolation:isolate; flex:1; width:100vw; max-width:100dvw; min-height:clamp(215px,33svh,330px); margin-top:22px; overflow:hidden; background:radial-gradient(ellipse 47% 87% at 50% 108%,#174ec4 0%,#326cd7 32%,#82ade5 62%,#a8cae800 100%); }
   .mobile-welcome-glow::before { content:""; position:absolute; inset:0; z-index:0; pointer-events:none; background:url('landing-grain.png') repeat center / 138px; mix-blend-mode:soft-light; opacity:.85; mask-image:radial-gradient(ellipse 59% 100% at 50% 110%,#000 12%,transparent 100%); }
-  .mobile-welcome-glow .landing-eyes { z-index:1; width:82px; top:65%; animation:landing-glance 8s ease-in-out infinite; }
+  .mobile-welcome-glow .landing-eyes { z-index:1; width:82px; top:65%; animation:mobile-eye-glance 8s ease-in-out infinite; }
+  @keyframes mobile-eye-glance {
+    0%, 100% { transform:translate(-50%,-50%); }
+    16%, 30% { transform:translate(calc(-50% + 13px),calc(-50% - 4px)); }
+    46%, 62% { transform:translate(calc(-50% - 13px),calc(-50% - 7px)); }
+    80% { transform:translate(calc(-50% + 4px),calc(-50% + 4px)); }
+  }
   @media (prefers-reduced-motion:reduce) {
     .mobile-welcome-glow .landing-eyes { animation:none; transition:none; }
   }
