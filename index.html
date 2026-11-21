@@ -20,6 +20,7 @@ dialog{width:min(440px,calc(100% - 24px));max-height:90dvh;border:1px solid var(
 .place-field{position:relative;margin-top:10px}.place-field label{display:grid;gap:5px}.place-field input{width:100%}.place-results{position:relative;z-index:2;list-style:none;margin:4px 0;padding:3px;border:1px solid var(--line);border-radius:9px;max-height:220px;overflow:auto;background:var(--card);box-shadow:0 5px 15px #182c5319}.place-results li{padding:8px;cursor:pointer;border-radius:5px}.place-results li:hover,.place-results li[aria-selected=true]{background:var(--tint)}.place-results small{display:block;color:var(--muted)}.place-field>small:not(:empty){display:block;margin-top:4px}
 </style>
 <link rel="stylesheet" href="interface.css">
+<link rel="stylesheet" href="mobile-ui.css">
 </head>
 <body>
 <div id="launch-screen" class="launch-screen" aria-hidden="true">
@@ -348,5 +349,6 @@ else {
 }
 render();
 </script>
+<script src="mobile-ui.js"></script>
 </body>
 </html>
